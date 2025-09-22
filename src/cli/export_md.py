@@ -74,7 +74,7 @@ def main():
     output_markdown_file = "book_text.md"
     
     # Path to the .env file. Update this path if your .env file is in a different location.
-    env_file_path = os.path.join(os.getcwd(), '.env')
+    env_file_path = os.path.join(os.getcwd(), '../../.env')
 
     # Load environment variables from .env file
     load_dotenv(dotenv_path=env_file_path)
@@ -113,11 +113,13 @@ def main():
             page = pdf_document.load_page(i)
             pix = page.get_pixmap(matrix=fitz.Matrix(300 / 72, 300 / 72))  # Render at 300 DPI
             image_data = pix.tobytes("jpeg")
-
+            
             text = get_text_from_image(image_data, api_key)
             
             if text.startswith(("HTTP error", "Error encoding")):
                 print(f"Failed to process page {i+1}: {text}")
+                # Nous arrêtons ici pour le débogage de la première page
+                return
             else:
                 print(f"Successfully extracted text from page {i+1}.")
                 extracted_pages.append(text)
