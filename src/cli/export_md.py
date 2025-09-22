@@ -74,7 +74,7 @@ def main():
     output_markdown_file = "book_text.md"
     
     # Path to the .env file. Update this path if your .env file is in a different location.
-    env_file_path = os.path.join(os.getcwd(), '../../.env.example')
+    env_file_path = os.path.join(os.getcwd(), '.env')
 
     # Load environment variables from .env file
     load_dotenv(dotenv_path=env_file_path)
