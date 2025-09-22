@@ -74,7 +74,7 @@ def main():
     output_markdown_file = "book_text.md"
     
     # Path to the .env file. Update this path if your .env file is in a different location.
-    env_file_path = os.path.join(os.getcwd(), '.env')
+    env_file_path = os.path.join(os.getcwd(), '../../.env.example')
 
     # Load environment variables from .env file
     load_dotenv(dotenv_path=env_file_path)
@@ -106,7 +106,7 @@ def main():
         
         print(f"Found {num_pages} page(s) in the PDF file.")
 
-        for i in range(num_pages):
+        for i in range(4):
             print(f"Processing page {i+1}/{num_pages}...")
             
             # Render the page to a high-resolution image in memory
