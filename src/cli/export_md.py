@@ -29,7 +29,7 @@ def get_text_from_image(image_data, api_key):
             {
                 "parts": [
                     {
-                        "text": "Extract all text from this scanned document page. Do not include any additional commentary, just the extracted text."
+                        "text": "Extract all text from this scanned document page. Do not include any additional commentary, just the extracted text. And produce a markdown "
                     },
                     {
                         "inlineData": {
