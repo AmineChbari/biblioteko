@@ -6,6 +6,12 @@ import requests
 import fitz  # PyMuPDF library
 from dotenv import load_dotenv
 
+PROMPT_OCR = (
+    "Extract all text from this scanned document page. "
+    "the text extracted must be in markdown syntax with titles, subtitles and backlines so that the result of the syntax can desplay the adequat format."
+)
+MODEL_API_URL = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-05-20:generateContent"
+
 def get_text_from_image(image_data, api_key):
     """
     Sends image data to the Gemini API for text extraction (OCR).
@@ -17,8 +23,8 @@ def get_text_from_image(image_data, api_key):
     Returns:
         str: The extracted text or an error message.
     """
-    # The API URL for the gemini-2.5-flash-preview-05-20 model
-    api_url = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-05-20:generateContent?key={api_key}"
+    # The API URL of the model
+    api_url = f"{MODEL_API_URL}?key={api_key}"
 
     # Convert the image data to a Base64 string
     encoded_string = base64.b64encode(image_data).decode("utf-8")
@@ -29,7 +35,7 @@ def get_text_from_image(image_data, api_key):
             {
                 "parts": [
                     {
-                        "text": "Extract all text from this scanned document page. Do not include any additional commentary, just the extracted text. And produce a markdown "
+                        "text": PROMPT_OCR
                     },
                     {
                         "inlineData": {
@@ -73,8 +79,9 @@ def main():
     # The name of the output Markdown file.
     output_markdown_file = "book_text.md"
     
-    # Path to the .env file. Update this path if your .env file is in a different location.
-    env_file_path = os.path.join(os.getcwd(), '../../.env')
+    # Path to the .env file.
+    script_dir = os.path.dirname(os.path.abspath(__file__))
+    env_file_path = os.path.join(script_dir, '../../.env')
 
     # Load environment variables from .env file
     load_dotenv(dotenv_path=env_file_path)
@@ -106,7 +113,10 @@ def main():
         
         print(f"Found {num_pages} page(s) in the PDF file.")
 
-        for i in range(4):
+        # Limitez le traitement à quelques premières pages pour les tests rapides
+        pages_to_process = min(num_pages, 5) 
+        
+        for i in range(pages_to_process):
             print(f"Processing page {i+1}/{num_pages}...")
             
             # Render the page to a high-resolution image in memory
@@ -132,7 +142,6 @@ def main():
 
     # Write all the extracted text to a single Markdown file
     with open(output_markdown_file, "w", encoding="utf-8") as f:
-        f.write("# Extracted Text from Book Scans\n\n")
         for i, page_text in enumerate(extracted_pages):
             f.write(f"## Page {i + 1}\n\n")
             f.write(page_text)
