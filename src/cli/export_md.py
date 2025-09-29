@@ -5,12 +5,19 @@ import json
 import requests
 import fitz  # PyMuPDF library
 from dotenv import load_dotenv
+# --- NOUVELLE DÉPENDANCE REQUISE ---
+# Pour créer un fichier .docx, nous devons utiliser la librairie 'python-docx'.
+# Vous devez l'installer : poetry add python-docx
+from docx import Document 
 
+# --- NOUVEAU PROMPT AMÉLIORÉ ---
 PROMPT_OCR = (
     "Extract all text from this scanned document page. "
-    "the text extracted must be in markdown syntax with titles, subtitles and backlines so that the result of the syntax can desplay the adequat format."
+    "The text extracted must be in docx format with titles, subtitles and backlines and all the display elements."
+    "Respond only with the raw docx content, without any additional commentary or explanation."
 )
 MODEL_API_URL = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-05-20:generateContent"
+# ------------------------------
 
 def get_text_from_image(image_data, api_key):
     """
@@ -71,13 +78,43 @@ def get_text_from_image(image_data, api_key):
     except Exception as err:
         return f"An error occurred: {err}"
 
+def write_to_docx(filename, pages_content):
+    """
+    Writes extracted text pages to a DOCX file using python-docx.
+    Each page is treated as a new section or set of paragraphs.
+    
+    NOTE: Since Gemini retourne du Markdown, cette fonction ajoute le texte brut 
+    (contenant la syntaxe Markdown) sous forme de paragraphes simples dans le DOCX.
+    """
+    document = Document()
+    
+    document.add_heading('Texte Extrait des Scans de Livre', 0)
+
+    for i, page_text in enumerate(pages_content):
+        # Ajoute le titre de la page
+        document.add_heading(f'Page {i + 1}', level=1)
+        
+        # Ajoute le contenu. Nous coupons les doubles sauts de ligne pour simuler des paragraphes
+        paragraphs = page_text.split('\n\n')
+        
+        for paragraph in paragraphs:
+            if paragraph.strip():
+                # Ajoute le texte brut du paragraphe
+                document.add_paragraph(paragraph.strip())
+        
+        # Ajoute un séparateur visuel entre les pages
+        document.add_page_break()
+
+    document.save(filename)
+
+
 def main():
     """
     Main function to process all pages of a PDF file.
     """
     # --- Configuration ---
-    # The name of the output Markdown file.
-    output_markdown_file = "book_text.md"
+    # The name of the output DOCX file. CHANGED from .md to .docx
+    output_file = "book_text.docx"
     
     # Path to the .env file.
     script_dir = os.path.dirname(os.path.abspath(__file__))
@@ -140,15 +177,21 @@ def main():
         print(f"An error occurred while processing the PDF: {e}")
         return
 
-    # Write all the extracted text to a single Markdown file
-    with open(output_markdown_file, "w", encoding="utf-8") as f:
-        for i, page_text in enumerate(extracted_pages):
-            f.write(f"## Page {i + 1}\n\n")
-            f.write(page_text)
-            f.write("\n\n---\n\n")  # Separator for pages
+    # Write all the extracted text to a single DOCX file
+    try:
+        print(f"\nWriting {len(extracted_pages)} pages to {output_file}...")
+        write_to_docx(output_file, extracted_pages)
+    except NameError:
+        print("\nERREUR: La librairie 'python-docx' n'est pas installée.")
+        print("Veuillez installer cette dépendance avant de lancer le script, en utilisant :")
+        print("poetry add python-docx")
+        return
+    except Exception as e:
+        print(f"\nUne erreur inattendue s'est produite lors de la création du fichier DOCX : {e}")
+        return
 
     print("\nProcessing complete!")
-    print(f"All extracted text has been saved to '{output_markdown_file}'.")
+    print(f"All extracted text has been saved to '{output_file}'.")
 
 if __name__ == "__main__":
     main()
