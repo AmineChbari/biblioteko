@@ -1,0 +1,24 @@
+[tool.poetry]
+name = "biblioteko"
+version = "0.1.0"
+description = "PJE D - Université de Lille - 2025/2026"
+authors = [
+    "IACOPINO Charles charles.iacopino.etu@univ-lille.fr",
+    "CHBARI Amine amine.chbari.etu@univ-lille.fr"
+]
+package-mode = false
+
+[tool.poetry.dependencies]
+python = "^3.11"
+requests = "^2.31.0"
+flask = "^3.0.0"
+google-generativeai = "^0.8.5"
+python-dotenv = "^1.1.1"
+pillow = "^11.3.0"
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^8.4.2"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
