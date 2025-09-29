@@ -16,6 +16,7 @@ google-generativeai = "^0.8.5"
 python-dotenv = "^1.1.1"
 pillow = "^11.3.0"
 google = "^3.0.0"
+fitz = "^0.0.1.dev2"
 
 [tool.poetry.group.dev.dependencies]
 pytest = "^8.4.2"
