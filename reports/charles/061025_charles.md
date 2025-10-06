@@ -17,7 +17,7 @@ L'export se fait via un chemin relatif `../..` pour trouver la racine du projet 
 
 # A faire/pistes d'amélioration :
 
-- Séparer l'OCR de l'export
+- Séparer l'OCR de l'export (au niveau des fonctions comme au niveau des appels à l'API)
 - Reformatter le code pour utiliser des classes si nécessaire
 - Démarrer le serveur back flask
 - Permettre au serveur de lancer des scripts par CLI (potentiellement en asynchrone avec async/await)
