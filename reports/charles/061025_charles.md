@@ -14,3 +14,11 @@ Exporte les documents dans `data/scans`.
 ### IMPORTANT :
 
 L'export se fait via un chemin relatif `../..` pour trouver la racine du projet puis `data/scans`. C'est possiblement un point sensible à surveiller selon l'endroit où on lance le script.
+
+# A faire/pistes d'amélioration :
+
+- Séparer l'OCR de l'export
+- Reformatter le code pour utiliser des classes si nécessaire
+- Démarrer le serveur back flask
+- Permettre au serveur de lancer des scripts par CLI (potentiellement en asynchrone avec async/await)
+- Faire un front minimal pour utiliser les routes
