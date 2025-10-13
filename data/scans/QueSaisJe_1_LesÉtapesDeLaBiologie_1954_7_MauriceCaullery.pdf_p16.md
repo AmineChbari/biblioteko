@@ -1,6 +1,0 @@
-## CHAPITRE II
-### LA RENAISSANCE ET LE RÉVEIL DE LA SCIENCE ANTIQUE
-
-Dans l'effondrement de l'Empire romain plus par la décadence de l'esprit et l'influence du christianisme que par l'action directe des Barbares la Science grecque s'éteignit avec la libre curiosité de l'esprit pour la Nature et l'abus général d'une vaine rhétorique mais elle trouva pour son sommeil un asile matériel à Byzance et c'est de là qu'elle devait finalement reprendre le chemin de l'Occident. Le Moyen Age fut l'ère de la théologie qui avait emprunté à la philosophie grecque les formes du raisonnement pour mettre celui-ci au service de la foi. Il en résulta la scolastique fondement de la culture médiévale
-
-La Science antique avait cependant trouvé avant la Renaissance un autre véhicule celui de la science arabe où elle s'était transposée d'abord à Damas et à Bagdad d'où elle avait été transportée ensuite en Espagne à Cordoue. Les savants arabes comme AVICENNE (980-1037) et AVERRHOÈS (1120-1198) admirèrent et commentèrent l'œuvre d'ARISTOTE. Les œuvres des philosophes arabes furent traduites par les Juifs d'Espagne et de l'hébreu en latin par les soins des archevêques de Tolède. ARISTOTE fut alors commenté par les grands docteurs chrétiens Michel Scot Albert LE GRAND saint THOMAS d'AQUIN et la biologie aristotélicienne fit le fond des grandes compilations du XIIIe siècle celles

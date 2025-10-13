@@ -1,9 +1,17 @@
-# que sais-je?
-## LES ÉTAPES DE LA BIOLOGIE
-### Le point des connaissances actuelles
+---
+page: 1
+language: French
+text_quality: good
+missing_parts: none
+---
+**Page 1**
 
-**Author(s)**
-Maurice Caullery
+## Que sais-je?
 
-**Publisher**
-Presses Universitaires de France
+# LES ÉTAPES DE LA BIOLOGIE
+
+**Author(s):** MAURICE CAULLERY
+
+### la voie de la recherche scientifique
+
+**Publisher:** PRESSES UNIVERSITAIRES DE FRANCE

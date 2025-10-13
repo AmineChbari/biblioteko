@@ -1,7 +1,0 @@
-# AVANT-PROPOS
-
-On s'est efforcé dans ce petit livre de montrer comment nous sommes arrivés à la connaissance que nous avons présentement des phénomènes de la Vie, de faire saisir les notions définitivement acquises et ce qui reste enveloppé sinon de mystère, du moins d'incertitude et d'obscurité.
-
-Cette histoire des Étapes de la Biologie remonte en réalité aux premiers âges de l'Humanité. L'homme primitif a dû, sans s'en rendre compte, faire œuvre de biologiste pour se défendre contre la Nature et pour subsister. Il a été dans la nécessité d'observer les êtres qui l'entouraient pour se protéger et se nourrir, de pratiquer ainsi la chasse, la pêche, la récolte des fruits et bientôt la culture et l'élevage. Chacune de ces activités lui fournissait des connaissances d'ordre biologique fondées sur l'observation et bientôt sur l'expérimentation. En même temps se posaient à son esprit les problèmes les plus généraux: ce qui oppose l'être vivant à la matière brute, l'origine de la Vie, l'énigme de la mort. Nos lointains ancêtres nous ont laissé des traces de toutes ces préoccupations témoignant de leurs facultés d'observation: telles sont les peintures des grottes, les gravures rupestres, les figurines qu'ils ont modelées ou gravées sur l'os et l'ivoire.
-
-Ils ont bientôt utilisé, sans doute empiriquement mais à partir d'essais de nature expérimentale, des [unreadable]
