@@ -6,10 +6,12 @@ Concepts :
 - Règlement
 - Sécurité
 - Intégrité (des données)
-- Gestion (des données/fichiers)
+- Gestion des données/fichiers
+- Gestion du système
 - Réputation
 - Redondance
 - Loi/justice
+- QoL utilisateur
 
 Acteurs :
 - Utilisateur
