@@ -2,6 +2,7 @@ Concepts :
 - Envoi de fichiers
 - Authentification
 - Inscription
+- Rôles
 - Administration/gestion (de utilisateurs et du site)
 - Règlement
 - Sécurité
