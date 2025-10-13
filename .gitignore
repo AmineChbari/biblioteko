@@ -209,5 +209,5 @@ __marimo__/
 # Obsidian
 .obsidian
 
-# Scanned files
-scans/
+# Temporary scanned files
+temp/
