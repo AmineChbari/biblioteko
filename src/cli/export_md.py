@@ -1,240 +1,110 @@
 import os
-import sys
-import base64
 import json
 import requests
-import fitz  # PyMuPDF
+import base64
 import argparse
 from dotenv import load_dotenv
 from mistralai import Mistral
 
 
-# ---------------------------
-# 1. PROMPT
-# ---------------------------
-PROMPT = """
-You are an OCR and text reconstruction assistant specialized in scanned books.
+class MarkdownFormatter:
+    """
+    Uses a language model to reformat OCR raw text into clean Markdown.
+    """
 
-Your task:
-- Extract ALL readable text from this scanned book page, even if partially blurry or incomplete.
-- If the page has multiple columns, reconstruct the text in correct reading order.
-- Ignore illustrations, captions, decorative text, or images.
-- Only include the main printed text of the book.
+    PROMPT = """
+    You are a text formatting assistant.
+    The input is raw text extracted from scanned book pages.
+    
+    Your task:
+    - Reformat it into clean Markdown.
+    - Detect titles, subtitles, and chapter headers (use #, ##, ###).
+    - Authors → under **Author(s)** section.
+    - Publisher → under **Publisher** section.
+    - Keep page numbers visible as `**Page N**`.
+    - Preserve paragraph structure with blank lines.
+    - If words are missing, use [unreadable].
+    - Do NOT include commentary or explanations.
 
-Output format:
-- Use clean **Markdown** structure.
-- Titles, subtitles, chapter headings → use `#`, `##`, `###`.
-- Authors → under a section called **Author(s)**.
-- Publisher → under a section called **Publisher**.
-- Keep page numbers (if visible) in a separate line, formatted as `**Page N**`.
-- Keep paragraphs separated by blank lines.
-- Do NOT add commentary, explanations, or guesses outside the text itself.
+    Output only the Markdown text.
+    """
 
-If some parts are unreadable, leave a placeholder `[unreadable]`.
+    def __init__(self, engine="gemini"):
+        load_dotenv()
+        self.engine = engine.lower()
+        self.api_key = os.getenv(f"{engine.upper()}_API_KEY")
+        self.model = os.getenv(f"{engine.upper()}_MODEL")
 
-Return only the Markdown text.
-"""
+        if not self.api_key or not self.model:
+            raise ValueError(f"Missing {engine.upper()}_API_KEY or {engine.upper()}_MODEL in .env")
 
+    def _format_gemini(self, text: str) -> str:
+        api_url = f"https://generativelanguage.googleapis.com/v1beta/models/{self.model}:generateContent?key={self.api_key}"
+        payload = {
+            "contents": [{"parts": [{"text": f"{self.PROMPT}\n\n{text}"}]}]
+        }
+        headers = {"Content-Type": "application/json"}
 
-# ---------------------------
-# 2. GEMINI EXPORT FUNCTION
-# ---------------------------
-def get_text_from_image_gemini(image_data: bytes, api_key: str, model: str, prompt: str) -> str:
-    """Send image data to Gemini API and return extracted text."""
-    encoded_string = base64.b64encode(image_data).decode("utf-8")
-
-    api_url = f"https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent?key={api_key}"
-
-    payload = {
-        "contents": [
-            {
-                "parts": [
-                    {"text": prompt},
-                    {"inlineData": {"mimeType": "image/jpeg", "data": encoded_string}},
-                ]
-            }
-        ]
-    }
-
-    headers = {"Content-Type": "application/json"}
-
-    try:
         response = requests.post(api_url, headers=headers, data=json.dumps(payload))
         response.raise_for_status()
-        response_data = response.json()
+        data = response.json()
+        if "candidates" in data:
+            for part in data["candidates"][0].get("content", {}).get("parts", []):
+                if "text" in part:
+                    return part["text"]
+        return ""
 
-        if "candidates" in response_data and response_data["candidates"]:
-            candidate = response_data["candidates"][0]
-            if "content" in candidate and "parts" in candidate["content"]:
-                for part in candidate["content"]["parts"]:
-                    if "text" in part:
-                        return part["text"]
-        return "No text extracted."
-
-    except requests.exceptions.HTTPError as err:
-        return f"HTTP error occurred: {err}"
-    except Exception as err:
-        return f"An error occurred: {err}"
-
-
-# ---------------------------
-# 3. MISTRAL EXPORT FUNCTION
-# ---------------------------
-def get_text_from_image_mistral(image_data: bytes, api_key: str, model: str, prompt: str) -> str:
-    """Send image data to Mistral API and return extracted text."""
-    encoded_string = base64.b64encode(image_data).decode("utf-8")
-
-    try:
-        client = Mistral(api_key=api_key)
+    def _format_mistral(self, text: str) -> str:
+        client = Mistral(api_key=self.api_key)
         response = client.chat.complete(
-            model=model,
+            model=self.model,
             messages=[
-                {
-                    "role": "user",
-                    "content": [
-                        {"type": "text", "text": prompt},
-                        {
-                            "type": "image_url",
-                            "image_url": {
-                                "url": f"data:image/jpeg;base64,{encoded_string}"
-                            },
-                        },
-                    ],
-                }
-            ],
+                {"role": "user", "content": self.PROMPT},
+                {"role": "user", "content": text}
+            ]
         )
         return response.choices[0].message.content
-    except Exception as err:
-        return f"An error occurred: {err}"
+
+    def format_text(self, text: str) -> str:
+        if self.engine == "gemini":
+            return self._format_gemini(text)
+        elif self.engine == "mistral":
+            return self._format_mistral(text)
+        else:
+            raise ValueError("Unsupported engine.")
 
 
-# ---------------------------
-# 4. EXPORT FUNCTIONS
-# ---------------------------
-def export_gemini(file_path: str, output_file: str, limit: int = None):
-    """Extract text using Gemini API and export to Markdown."""
-    load_dotenv()
-    api_key = os.getenv("GEMINI_API_KEY")
-    model = os.getenv("GEMINI_MODEL")
+class MarkdownExporter:
+    """Loads raw OCR files and exports formatted Markdown files."""
 
-    if not api_key or not model:
-        print("Error: Missing GEMINI_API_KEY or GEMINI_MODEL in .env file.")
-        return
+    def __init__(self, engine="gemini"):
+        self.formatter = MarkdownFormatter(engine)
+        self.output_folder = os.path.abspath(os.path.join(os.path.dirname(__file__), "../../data/scans"))
+        os.makedirs(self.output_folder, exist_ok=True)
 
-    extracted_pages = process_file(file_path, api_key, model, PROMPT, get_text_from_image_gemini, limit)
+    def export(self, input_file: str):
+        with open(input_file, "r", encoding="utf-8") as f:
+            raw_text = f.read()
 
-    write_markdown(output_file, extracted_pages)
+        formatted = self.formatter.format_text(raw_text)
+        base_name = os.path.splitext(os.path.basename(input_file))[0]
+        output_path = os.path.join(self.output_folder, f"{base_name}.md")
 
+        with open(output_path, "w", encoding="utf-8") as f:
+            f.write(formatted)
 
-def export_mistral(file_path: str, output_file: str, limit: int = None):
-    """Extract text using Mistral API and export to Markdown."""
-    load_dotenv()
-    api_key = os.getenv("MISTRAL_API_KEY")
-    model = os.getenv("MISTRAL_MODEL")
-
-    if not api_key or not model:
-        print("Error: Missing MISTRAL_API_KEY or MISTRAL_MODEL in .env file.")
-        return
-
-    extracted_pages = process_file(file_path, api_key, model, PROMPT, get_text_from_image_mistral, limit)
-
-    write_markdown(output_file, extracted_pages)
+        print(f"Formatted Markdown saved to {output_path}")
+        return output_path
 
 
-# ---------------------------
-# 5. FILE PROCESSING FUNCTION
-# ---------------------------
-def process_file(file_path: str, api_key: str, model: str, prompt: str, extractor_func, limit: int = None):
-    """Process a file (PDF or image) and extract text page by page."""
-    extracted_pages = []
-
-    file_ext = os.path.splitext(file_path)[1].lower()
-
-    # Handle single image
-    if file_ext in [".jpg", ".jpeg", ".png"]:
-        with open(file_path, "rb") as img_file:
-            image_data = img_file.read()
-            text = extractor_func(image_data, api_key, model, prompt)
-            extracted_pages.append(text)
-
-    # Handle PDF
-    elif file_ext == ".pdf":
-        pdf_document = fitz.open(file_path)
-        num_pages = pdf_document.page_count
-        print(f"Found {num_pages} page(s) in the PDF file.")
-
-        max_pages = limit if limit and limit < num_pages else num_pages
-
-        for i in range(max_pages):
-            print(f"Processing page {i + 1}/{max_pages}...")
-            page = pdf_document.load_page(i)
-            pix = page.get_pixmap(matrix=fitz.Matrix(300 / 72, 300 / 72))  # 300 DPI
-            image_data = pix.tobytes("jpeg")
-            text = extractor_func(image_data, api_key, model, prompt)
-            extracted_pages.append(text)
-        pdf_document.close()
-    else:
-        print("Error: Unsupported file type. Only PDF or image files are supported.")
-
-    return extracted_pages
-
-# ---------------------------
-# 6. MARKDOWN WRITER
-# ---------------------------
-def write_markdown(output_file: str, extracted_pages: list):
-    """Write extracted text into a Markdown file."""
-    with open(output_file, "w", encoding="utf-8") as f:
-        f.write("# Extracted Text\n\n")
-        for i, page_text in enumerate(extracted_pages):
-            f.write(f"## Page {i + 1}\n\n")
-            f.write(page_text or "")
-            f.write("\n\n---\n\n")
-    print(f"\nAll extracted text saved to '{output_file}'.")
-
-
-# ---------------------------
-# 7. MAIN ENTRY POINT
-# ---------------------------
 def main():
-    parser = argparse.ArgumentParser(
-        description="Export text from PDF or image using Gemini or Mistral API."
-    )
-    parser.add_argument("file", help="Path to the input file (PDF or image).")
-    parser.add_argument(
-        "--engine",
-        choices=["gemini", "mistral"],
-        default="gemini",
-        help="Choose the LLM engine (default: gemini).",
-    )
-    parser.add_argument(
-        "--limit",
-        type=int,
-        default=None,
-        help="Maximum number of pages to process (default: all pages).",
-    )
+    parser = argparse.ArgumentParser(description="Format OCR text into Markdown.")
+    parser.add_argument("file", help="Path to raw OCR text file.")
+    parser.add_argument("--engine", choices=["gemini", "mistral"], default="gemini")
     args = parser.parse_args()
 
-    # --- Construct input file path ---
-    file_path = args.file
-    base_name = os.path.splitext(os.path.basename(file_path))[0]
-
-    # --- Construct output folder path ---
-    # Script is in biblioteko/src/CLI/, output goes to biblioteko/data/scans/
-    project_root = os.path.abspath(os.path.join(os.path.dirname(__file__), "../.."))
-    output_folder = os.path.join(project_root, "data", "scans")
-    os.makedirs(output_folder, exist_ok=True)  # Ensure the folder exists
-
-    # Output Markdown file
-    output_file = os.path.join(output_folder, f"{base_name}.md")
-
-    # --- Call the appropriate export function ---
-    if args.engine == "gemini":
-        export_gemini(file_path, output_file, limit=args.limit)
-    elif args.engine == "mistral":
-        export_mistral(file_path, output_file, limit=args.limit)
-    else:
-        print("Error: Unsupported engine. Please use 'gemini' or 'mistral'.")
-        sys.exit(1)
+    exporter = MarkdownExporter(engine=args.engine)
+    exporter.export(args.file)
 
 
 if __name__ == "__main__":
