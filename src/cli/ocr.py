@@ -147,7 +147,7 @@ class OCRProcessor:
 
             for i in range(limit):
                 page = pdf.load_page(i)
-                pix = page.get_pixmap(matrix=fitz.Matrix(300 / 72, 300 / 72))
+                pix = page.get_pixmap(matrix=fitz.Matrix(600 / 72, 600 / 72))
                 print(f"Processing page {i + 1}/{limit}...")
                 text = self.extractor.extract_text(pix.tobytes("jpeg"), page_number=i + 1)
                 out_path = os.path.join(self.temp_folder, f"{os.path.basename(file_path)}_p{i+1}.txt")
