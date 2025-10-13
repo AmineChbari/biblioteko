@@ -1,0 +1,8 @@
+# LE RÉVEIL DE LA SCIENCE ANTIQUE
+**Page 15**
+
+d'ALBERT LE GRAND, de Thomas de CANTINPRÉ (*De naturis rerum*) et de Vincent de BEAUVAIS (*Speculum majus tripartitum*) mais sans étude directe de la nature.
+
+C'est aussi la médecine arabe qui servit de véhicule de transmission à la médecine grecque principalement par l'Ecole de Salerne du XIe au XIIIe siècle ; la synthèse en a été faite en vers hexamètres dans le *Regimen sanitatis salernitanum* au début du XIIe. La médecine arabe fut aussi l'inspiratrice de l'Ecole de Montpellier fondée au cours du XIIe siècle et qui devait avoir une forte personnalité jusqu'à la fin du XVIIIe. La chirurgie, se heurtant à l'opposition de l'Eglise, fit péniblement ses premiers pas à la fin du Moyen Age. La Renaissance fut, avec la découverte directe de la science grecque dans les œuvres mêmes qu'elle avait produites, un retour à l'observation de la Nature et une réaction contre la mentalité scolastique. À Paris, la fondation du Collège Royal (1530), aujourd'hui le Collège de France par François Ier, marque la réaction de l'esprit libre contre l'Université (et surtout la Faculté de Théologie, la Sorbonne) asservie à la scolastique.
+
+Mais ce mouvement, d'où allait sortir l'esprit moderne, ne fut pas un affranchissement complet et immédiat. S'il émancipa la connaissance du moule scolastique, il l'asservit en même temps à l'autorité tyrannique de l'Antiquité, qui fut longtemps un rideau plus ou moins opaque interposé devant la nature réelle. Toute proposition résultant de l'observation directe mais allant à l'encontre de l'autorité des Anciens fut suspecte et plus ou moins proscrite. ARISTOTE et GALIEN pour la Biologie devinrent des obstacles à l'encontre du progrès. Les Universités italiennes ont été les protago

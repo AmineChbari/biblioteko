@@ -1,0 +1,9 @@
+# LES ÉTAPES DE LA BIOLOGIE
+
+**Page 18**
+
+circulation exposée par HARVEY dans son célèbre ouvrage *Exercitationes de motu cordis et sanguinis in animalibus* publié à Francfort en 1628 non sans de minutieuses précautions et après avoir fait pendant une série d'années l'objet de démonstrations au Collège des Médecins de Londres. Par la vivisection, HARVEY avait analysé tous les mouvements du cœur, reconnu que le pouls est dû à la propagation de l'onde sanguine dans les artères et compris à l'aide d'expériences ingénieuses que le sang lancé par le cœur dans les artères y revient par les veines. Ce fut seulement en 1661 que MALPIGHI à Bologne assista sous le microscope au cheminement du sang dans les capillaires faisant la jonction des artérioles aux veinules.
+
+La découverte de HARVEY est une des grandes étapes de la Biologie, d'une part dans l'ordre des faits, de l'autre et surtout dans la mentalité scientifique. Elle eut pour complément celle de la circulation lymphatique amorcée par ASELLI à Pavie en 1622 et complétée à Montpellier en 1647 par PECQUET avec quelques compléments dus à RÜDBECK et à BARTHOLIN dans les années suivantes. En 1669 par des expériences de respiration artificielle LOWER prouvait que le changement de couleur du sang connu depuis longtemps se faisait dans les poumons sous l'influence de l'air.
+
+Cette lente révolution scientifique qui s'opéra au milieu de résistances tenaces et de polémiques violentes a eu son écho dans la littérature du XVIIe siècle dans les railleries de Molière à l'égard des médecins. La Faculté de Médecine de Paris fut un des milieux les plus obstinément fermés aux idées nouvelles. L'anatomiste RIOLAN y était le champion du galénisme et comme la fondation du Collège de France au XVIe siècle, celle du Jardin du Roi

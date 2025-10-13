@@ -1,0 +1,8 @@
+# LA SCIENCE GRECQUE ET LA BIOLOGIE
+**Page 13**
+
+antique son système devait dominer la science de façon tyrannique jusqu'au seuil du XVIIe siècle. Avant de quitter la science antique, signalons encore que la Botanique, déjà fortement élaborée par ARISTOTE et THÉOPHRASTE, avait encore progressé par ses applications à la thérapeutique. À l'époque de Néron, un médecin grec servant dans les armées romaines, DIOSCORIDE, est l'auteur d'un traité de matière médicale où sont mises en œuvre les propriétés de plus de six cents espèces végétales et qui a lui aussi régné jusqu'à l'époque moderne.
+
+La Grèce antique est donc la mère des sciences biologiques qu'elle a poussées assez loin. Rome n'a rien innové. Elle n'a fourni que des compilateurs dépourvus d'esprit critique comme PLINE L'ANCIEN ou des philosophes qui avaient assimilé la pensée grecque et l'ont exprimée dans des œuvres synthétiques. Tel est LUCRÈCE dont le poème philosophique *De natura rerum* reflète surtout les vues d'ÉPICURE et renferme d'ailleurs des intuitions de caractère remarquablement moderne sur l'évolution de la Nature.
+
+La décadence du monde gréco-romain ne devait pas tarder à tarir la source du progrès et la Science antique s'effondra avec l'Empire sous les coups des Barbares. La marche en avant ne devait reprendre qu'au XVIe siècle avec la Renaissance qui, au sens propre du mot, était l'exhumation de la pensée de l'Antiquité.
