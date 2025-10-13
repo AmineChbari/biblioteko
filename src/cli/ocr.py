@@ -18,13 +18,49 @@ class OCRExtractor:
     """
 
     RAW_PROMPT = """
-    You are an OCR assistant.
-    Extract all readable text from the image as plain text only.
-    Do not interpret or reformat.
-    Do not add punctuation or markdown.
-    Keep the reading order consistent (columns → left to right, top to bottom).
-    Ignore illustrations, captions, and decorative elements.
-    Output only the text, with blank lines for paragraph breaks.
+    You are a highly reliable OCR extraction assistant.
+
+    Your goal is to extract **all readable text** from the provided book page image.
+
+    Follow these strict rules:
+
+    1. **Output format**
+    - Use the following structure:
+        ```
+        [METADATA]
+        page_number: N
+        language: [detected_language]
+        text_quality: [good | partial | poor]
+        missing_parts: [none | minor | major]
+        ```
+
+        [TEXT]
+        (extracted text in reading order)
+        ```
+
+    2. **Extraction rules**
+    - Extract all readable text exactly as it appears.
+    - Keep the natural reading order:
+        - Columns → left to right.
+        - Top to bottom.
+    - Preserve paragraph breaks with a blank line between paragraphs.
+    - Ignore:
+        - Decorative or non-text elements (borders, ornaments, backgrounds)
+        - Captions under images or tables unless they are part of the main text.
+
+    3. **Completion and normalization**
+    - If small gaps or missing words are clearly predictable (e.g., in numbered lists, tables of contents, or page headers), fill them **logically** and mark them in brackets, e.g. `[50]`, `[continued text]`.
+    - If text is unreadable or missing entirely, write `[unreadable]`.
+    - Always prefer `[unreadable]` over guessing words.
+    - If page number is visible, extract it. If not, estimate it logically (e.g., based on sequence continuity).
+
+    4. **Consistency**
+    - Do not rephrase, interpret, or translate.
+    - Do not use markdown or additional formatting.
+    - Be deterministic — for the same input, always return the same structure.
+
+    Output only the final structured text (no commentary or explanations).
+
     """
 
     def __init__(self, engine="gemini", max_retries=3, cooldown=5):
